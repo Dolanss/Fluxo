@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxo de Deploy de Aplicação</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-size: 0.95rem;
+    color: #6b7280;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .step {
+    width: 100%;
+    max-width: 560px;
+    border-radius: 16px;
+    padding: 28px 32px;
+    position: relative;
+    transition: transform 0.2s;
+  }
+
+  .step:hover {
+    transform: translateY(-2px);
+  }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .step-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+
+  .step-icon {
+    font-size: 1.3rem;
+  }
+
+  /* Step colors */
+  .step-dev {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    border: 1px solid #c4b5fd;
+  }
+  .step-dev .step-number { background: #7c3aed; color: #fff; }
+  .step-dev .step-title { color: #5b21b6; }
+
+  .step-qa {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #fbbf24;
+  }
+  .step-qa .step-number { background: #d97706; color: #fff; }
+  .step-qa .step-title { color: #92400e; }
+
+  .step-migrate {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border: 1px solid #f87171;
+  }
+  .step-migrate .step-number { background: #dc2626; color: #fff; }
+  .step-migrate .step-title { color: #991b1b; }
+
+  .step-deploy {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border: 1px solid #34d399;
+  }
+  .step-deploy .step-number { background: #059669; color: #fff; }
+  .step-deploy .step-title { color: #065f46; }
+
+  .step-change {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border: 1px solid #60a5fa;
+  }
+  .step-change .step-number { background: #2563eb; color: #fff; }
+  .step-change .step-title { color: #1e40af; }
+
+  .step-version {
+    background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+    border: 1px solid #818cf8;
+  }
+  .step-version .step-number { background: #4f46e5; color: #fff; }
+  .step-version .step-title { color: #3730a3; }
+
+  /* Connector arrows */
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 48px;
+    justify-content: center;
+    position: relative;
+  }
+
+  .connector .line {
+    width: 2px;
+    height: 28px;
+    background: #9ca3af;
+  }
+
+  .connector .arrow {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 8px solid #9ca3af;
+  }
+
+  /* Alert box */
+  .alert-box {
+    max-width: 560px;
+    width: 100%;
+    margin: 40px auto 0;
+    background: #fff;
+    border: 2px solid #ef4444;
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .alert-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .alert-box h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #dc2626;
+    margin-bottom: 6px;
+  }
+
+  .alert-box p {
+    font-size: 0.88rem;
+    color: #4b5563;
+    line-height: 1.55;
+  }
+
+  .highlight {
+    background: rgba(255,255,255,0.5);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+  }
+
+  .tag-user { background: #7c3aed; color: #fff; }
+  .tag-ti { background: #2563eb; color: #fff; }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 0.8rem;
+    color: #9ca3af;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Ciclo de Vida da Aplicação</h1>
+    <p>Entenda o que acontece depois que sua aplicação é finalizada no Lovable e como solicitar alterações.</p>
+  </div>
+
+  <div class="flow">
+
+    <!-- Step 1 -->
+    <div class="step step-dev">
+      <div class="step-number">1</div>
+      <div class="step-title"><span class="step-icon">🛠️</span> Desenvolvimento no Lovable</div>
+      <div class="step-desc">
+        Você constrói sua aplicação no Lovable utilizando o Supabase como backend temporário (banco de dados, autenticação, storage, rotas de API, etc). O Supabase é usado apenas nesta fase porque o Lovable depende dele para funcionar durante o desenvolvimento &mdash; ele <strong>não</strong> é a infraestrutura definitiva da empresa.
+      </div>
+      <span class="tag tag-user">Você faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 2 -->
+    <div class="step step-dev">
+      <div class="step-number">2</div>
+      <div class="step-title"><span class="step-icon">✅</span> Finalização da Aplicação</div>
+      <div class="step-desc">
+        Ao considerar a aplicação <span class="highlight">pronta</span>, você comunica ao time de TI que o desenvolvimento foi concluído.
+      </div>
+      <span class="tag tag-user">Você faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 3 -->
+    <div class="step step-qa">
+      <div class="step-number">3</div>
+      <div class="step-title"><span class="step-icon">🔍</span> Controle de Qualidade (QA)</div>
+      <div class="step-desc">
+        O time de TI revisa o código, testa funcionalidades, verifica segurança e valida se a aplicação está funcionando corretamente antes de seguir adiante.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 4 -->
+    <div class="step step-migrate">
+      <div class="step-number">4</div>
+      <div class="step-title"><span class="step-icon">📦</span> Migração do Supabase</div>
+      <div class="step-desc">
+        Todo o backend é <span class="highlight">retirado do Supabase</span> &mdash; banco de dados, rotas de API, storage, autenticação &mdash; e migrado para a infraestrutura própria no GCP. O Supabase deixa de ser utilizado.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 5 -->
+    <div class="step step-deploy">
+      <div class="step-number">5</div>
+      <div class="step-title"><span class="step-icon">🚀</span> Deploy no GCP</div>
+      <div class="step-desc">
+        A aplicação é publicada no Google Cloud Platform (GCP) em ambiente de produção, com monitoramento, backups e toda a infraestrutura corporativa.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 6 -->
+    <div class="step step-change">
+      <div class="step-number">6</div>
+      <div class="step-title"><span class="step-icon">📝</span> Solicitação de Alterações</div>
+      <div class="step-desc">
+        A partir deste ponto, <span class="highlight">qualquer alteração</span> precisa ser solicitada ao time de TI. Isso evita retrabalho, garante rastreabilidade e mantém a qualidade do sistema.
+      </div>
+      <span class="tag tag-user">Você solicita</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 7 -->
+    <div class="step step-version">
+      <div class="step-number">7</div>
+      <div class="step-title"><span class="step-icon">🏷️</span> Nova Versão</div>
+      <div class="step-desc">
+        Cada alteração aprovada e implementada gera uma <span class="highlight">nova versão</span> da aplicação, com registro completo do que mudou, quando e por quem.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+  </div>
+
+  <!-- Alert -->
+  <div class="alert-box">
+    <div class="alert-icon">⚠️</div>
+    <div>
+      <h3>Por que não posso alterar direto no Lovable depois do deploy?</h3>
+      <p>
+        Após o deploy, a aplicação já está rodando na infraestrutura corporativa (GCP). Alterar diretamente no Lovable causaria <strong>divergência</strong> entre o que está em produção e o que está no Lovable, gerando <strong>retrabalho</strong>, <strong>perda de rastreabilidade</strong> e possíveis <strong>problemas de segurança</strong>. Por isso, todas as mudanças passam pelo TI com controle de versão.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Fluxo de deploy &mdash; Time de TI
+  </div>
+
+</div>
+
+</body>
+</html>
