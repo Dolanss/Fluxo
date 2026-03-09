@@ -263,3 +263,90 @@
     <div class="step step-homolog">
       <div class="step-number">3</div>
       <div class="step-title"><span class="step-icon">🧪</span> Período de Homologação</div>
+      <div class="step-desc">
+        A aplicação entra em uso interno por até <span class="highlight">30 dias</span> para validação no dia a dia. Durante esse período, você ainda pode iterar livremente no Lovable. Caso necessário, o prazo pode ser estendido por mais 30 dias mediante <span class="highlight">justificativa aprovada</span>. Após esse período, a aplicação segue para migração.
+      </div>
+      <span class="tag tag-user">Você valida</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 4 -->
+    <div class="step step-qa">
+      <div class="step-number">4</div>
+      <div class="step-title"><span class="step-icon">🔍</span> Controle de Qualidade (QA)</div>
+      <div class="step-desc">
+        O time de TI revisa o código, testa funcionalidades, verifica segurança e valida se a aplicação está funcionando corretamente antes de seguir adiante.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 5 -->
+    <div class="step step-migrate">
+      <div class="step-number">5</div>
+      <div class="step-title"><span class="step-icon">📦</span> Migração do Supabase</div>
+      <div class="step-desc">
+        Todo o backend é <span class="highlight">retirado do Supabase</span> &mdash; banco de dados, rotas de API, storage, autenticação &mdash; e migrado para a infraestrutura da ValueCore (atualmente GCP). O Supabase deixa de ser utilizado.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 6 -->
+    <div class="step step-deploy">
+      <div class="step-number">6</div>
+      <div class="step-title"><span class="step-icon">🚀</span> Deploy na ValueCore</div>
+      <div class="step-desc">
+        A aplicação é publicada na infraestrutura da ValueCore (atualmente Google Cloud Platform) em ambiente de produção, com monitoramento, backups e toda a infraestrutura corporativa.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 7 -->
+    <div class="step step-change">
+      <div class="step-number">7</div>
+      <div class="step-title"><span class="step-icon">📝</span> Solicitação de Alterações</div>
+      <div class="step-desc">
+        A partir deste ponto, <span class="highlight">qualquer alteração</span> precisa ser solicitada ao time de TI. Isso evita retrabalho, garante rastreabilidade e mantém a qualidade do sistema.
+      </div>
+      <span class="tag tag-user">Você solicita</span>
+    </div>
+
+    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+    <!-- Step 8 -->
+    <div class="step step-version">
+      <div class="step-number">8</div>
+      <div class="step-title"><span class="step-icon">🏷️</span> Nova Versão</div>
+      <div class="step-desc">
+        Cada alteração aprovada e implementada gera uma <span class="highlight">nova versão</span> da aplicação, com registro completo do que mudou, quando e por quem.
+      </div>
+      <span class="tag tag-ti">TI faz</span>
+    </div>
+
+  </div>
+
+  <!-- Alert -->
+  <div class="alert-box">
+    <div class="alert-icon">⚠️</div>
+    <div>
+      <h3>Por que não posso alterar direto no Lovable depois do deploy?</h3>
+      <p>
+        Após o deploy, a aplicação já está rodando na infraestrutura da ValueCore. Alterar diretamente no Lovable causaria <strong>divergência</strong> entre o que está em produção e o que está no Lovable, gerando <strong>retrabalho</strong>, <strong>perda de rastreabilidade</strong> e possíveis <strong>problemas de segurança</strong>. Por isso, todas as mudanças passam pelo TI com controle de versão.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Fluxo de deploy &mdash; Time de TI
+  </div>
+
+</div>
+
+</body>
+</html>
