@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fluxo de Deploy de Aplicação</title>
+<title>Documentação TI — Grupo Value</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,27 +14,156 @@
     background: #f0f2f5;
     color: #1a1a2e;
     min-height: 100vh;
-    padding: 40px 20px;
   }
 
-  .container {
+  /* ── Navigation ── */
+  .top-bar {
+    background: #1a1a2e;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .top-bar .logo {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+
+  .top-bar .breadcrumb {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .top-bar .breadcrumb:hover { color: #fff; }
+
+  /* ── Sections ── */
+  .section { display: none; padding: 48px 20px; }
+  .section.active { display: block; }
+
+  /* ── HOME ── */
+  .home-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .home-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #7c3aed;
+    background: #ede9fe;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .home-container h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .home-container .subtitle {
+    font-size: 1rem;
+    color: #6b7280;
+    max-width: 520px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 32px 28px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    border-color: transparent;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 0.85rem;
+    color: #6b7280;
+    line-height: 1.5;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 28px;
+    right: 24px;
+    font-size: 1.2rem;
+    color: #d1d5db;
+    transition: all 0.25s;
+  }
+
+  .card:hover .card-arrow {
+    color: #7c3aed;
+    transform: translateX(4px);
+  }
+
+  .card:first-child:hover { border-color: #7c3aed; }
+  .card:last-child:hover { border-color: #059669; }
+
+  /* ── FLOW PAGE ── */
+  .flow-container {
     max-width: 720px;
     margin: 0 auto;
   }
 
-  .header {
+  .page-header {
     text-align: center;
     margin-bottom: 48px;
   }
 
-  .header h1 {
+  .page-header h1 {
     font-size: 1.75rem;
     font-weight: 700;
     color: #1a1a2e;
     margin-bottom: 8px;
   }
 
-  .header p {
+  .page-header p {
     font-size: 0.95rem;
     color: #6b7280;
     max-width: 520px;
@@ -58,9 +187,7 @@
     transition: transform 0.2s;
   }
 
-  .step:hover {
-    transform: translateY(-2px);
-  }
+  .step:hover { transform: translateY(-2px); }
 
   .step-number {
     display: inline-flex;
@@ -89,9 +216,7 @@
     opacity: 0.85;
   }
 
-  .step-icon {
-    font-size: 1.3rem;
-  }
+  .step-icon { font-size: 1.3rem; }
 
   .step-dev {
     background: linear-gradient(135deg, #ede9fe, #ddd6fe);
@@ -148,7 +273,6 @@
     align-items: center;
     height: 48px;
     justify-content: center;
-    position: relative;
   }
 
   .connector .line {
@@ -158,8 +282,7 @@
   }
 
   .connector .arrow {
-    width: 0;
-    height: 0;
+    width: 0; height: 0;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-top: 8px solid #9ca3af;
@@ -216,9 +339,184 @@
   .tag-user { background: #7c3aed; color: #fff; }
   .tag-ti { background: #2563eb; color: #fff; }
 
+  /* ── PROMPTS PAGE ── */
+  .prompts-container {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .prompt-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 36px 32px;
+    margin-top: 32px;
+  }
+
+  .prompt-card h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+  }
+
+  .prompt-card .prompt-sub {
+    font-size: 0.88rem;
+    color: #6b7280;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .prompt-section {
+    margin-bottom: 28px;
+  }
+
+  .prompt-section h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+
+  .prompt-section p, .prompt-section li {
+    font-size: 0.88rem;
+    color: #4b5563;
+    line-height: 1.6;
+  }
+
+  .prompt-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .prompt-section ul li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+
+  .prompt-section ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #7c3aed;
+    font-weight: 700;
+  }
+
+  .code-block {
+    background: #1a1a2e;
+    color: #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    position: relative;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 16px 0;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #374151;
+    color: #e2e8f0;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .copy-btn:hover { background: #7c3aed; }
+  .copy-btn.copied { background: #059669; }
+
+  .checklist-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 8px;
+  }
+
+  .checklist-box h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    color: #4b5563;
+    line-height: 1.5;
+  }
+
+  .checklist-item .check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    margin-top: 1px;
+  }
+
+  .info-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 24px;
+  }
+
+  .info-box h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e40af;
+    margin-bottom: 8px;
+  }
+
+  .info-box p {
+    font-size: 0.85rem;
+    color: #1e40af;
+    line-height: 1.55;
+  }
+
+  .why-box {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 24px;
+  }
+
+  .why-box h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #065f46;
+    margin-bottom: 8px;
+  }
+
+  .why-box p {
+    font-size: 0.85rem;
+    color: #065f46;
+    line-height: 1.55;
+  }
+
   .footer {
     text-align: center;
     margin-top: 48px;
+    padding-bottom: 32px;
     font-size: 0.8rem;
     color: #9ca3af;
   }
@@ -226,127 +524,262 @@
 </head>
 <body>
 
-<div class="container">
-
-  <div class="header">
-    <h1>Ciclo de Vida da Aplicação</h1>
-    <p>Entenda o que acontece depois que sua aplicação é finalizada no Lovable e como solicitar alterações.</p>
-  </div>
-
-  <div class="flow">
-
-    <!-- Step 1 -->
-    <div class="step step-dev">
-      <div class="step-number">1</div>
-      <div class="step-title"><span class="step-icon">🛠️</span> Desenvolvimento no Lovable</div>
-      <div class="step-desc">
-        Você constrói sua aplicação no Lovable utilizando o Supabase como backend temporário (banco de dados, autenticação, storage, rotas de API, etc). O Supabase é usado apenas nesta fase porque o Lovable depende dele para funcionar durante o desenvolvimento &mdash; ele <strong>não</strong> é a infraestrutura definitiva da empresa.
-      </div>
-      <span class="tag tag-user">Você faz</span>
-    </div>
-
-    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
-
-    <!-- Step 2 -->
-    <div class="step step-dev">
-      <div class="step-number">2</div>
-      <div class="step-title"><span class="step-icon">✅</span> Finalização da Aplicação</div>
-      <div class="step-desc">
-        Ao considerar a aplicação <span class="highlight">pronta</span>, você comunica ao time de TI que o desenvolvimento foi concluído.
-      </div>
-      <span class="tag tag-user">Você faz</span>
-    </div>
-
-    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
-
-    <!-- Step 3 -->
-    <div class="step step-homolog">
-      <div class="step-number">3</div>
-      <div class="step-title"><span class="step-icon">🧪</span> Período de Homologação</div>
-      <div class="step-desc">
-        A aplicação entra em uso interno por até <span class="highlight">30 dias</span> para validação no dia a dia. Durante esse período, você ainda pode iterar livremente no Lovable. Caso necessário, o prazo pode ser estendido por mais 30 dias mediante <span class="highlight">justificativa aprovada</span>. Após esse período, a aplicação segue para migração.
-      </div>
-      <span class="tag tag-user">Você valida</span>
-    </div>
-
-    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
-
-    <!-- Step 4 -->
-    <div class="step step-qa">
-      <div class="step-number">4</div>
-      <div class="step-title"><span class="step-icon">🔍</span> Controle de Qualidade (QA)</div>
-      <div class="step-desc">
-        O time de TI revisa o código, testa funcionalidades, verifica segurança e valida se a aplicação está funcionando corretamente antes de seguir adiante.
-      </div>
-      <span class="tag tag-ti">TI faz</span>
-    </div>
-
-    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
-
-    <!-- Step 5 -->
-    <div class="step step-migrate">
-      <div class="step-number">5</div>
-      <div class="step-title"><span class="step-icon">📦</span> Migração do Supabase</div>
-      <div class="step-desc">
-        Todo o backend é <span class="highlight">retirado do Supabase</span> &mdash; banco de dados, rotas de API, storage, autenticação &mdash; e migrado para a infraestrutura da ValueCore (atualmente GCP). O Supabase deixa de ser utilizado.
-      </div>
-      <span class="tag tag-ti">TI faz</span>
-    </div>
-
-    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
-
-    <!-- Step 6 -->
-    <div class="step step-deploy">
-      <div class="step-number">6</div>
-      <div class="step-title"><span class="step-icon">🚀</span> Deploy na ValueCore</div>
-      <div class="step-desc">
-        A aplicação é publicada na infraestrutura da ValueCore (atualmente Google Cloud Platform) em ambiente de produção, com monitoramento, backups e toda a infraestrutura corporativa.
-      </div>
-      <span class="tag tag-ti">TI faz</span>
-    </div>
-
-    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
-
-    <!-- Step 7 -->
-    <div class="step step-change">
-      <div class="step-number">7</div>
-      <div class="step-title"><span class="step-icon">📝</span> Solicitação de Alterações</div>
-      <div class="step-desc">
-        A partir deste ponto, <span class="highlight">qualquer alteração</span> precisa ser solicitada ao time de TI. Isso evita retrabalho, garante rastreabilidade e mantém a qualidade do sistema.
-      </div>
-      <span class="tag tag-user">Você solicita</span>
-    </div>
-
-    <div class="connector"><div class="line"></div><div class="arrow"></div></div>
-
-    <!-- Step 8 -->
-    <div class="step step-version">
-      <div class="step-number">8</div>
-      <div class="step-title"><span class="step-icon">🏷️</span> Nova Versão</div>
-      <div class="step-desc">
-        Cada alteração aprovada e implementada gera uma <span class="highlight">nova versão</span> da aplicação, com registro completo do que mudou, quando e por quem.
-      </div>
-      <span class="tag tag-ti">TI faz</span>
-    </div>
-
-  </div>
-
-  <!-- Alert -->
-  <div class="alert-box">
-    <div class="alert-icon">⚠️</div>
-    <div>
-      <h3>Por que não posso alterar direto no Lovable depois do deploy?</h3>
-      <p>
-        Após o deploy, a aplicação já está rodando na infraestrutura da ValueCore. Alterar diretamente no Lovable causaria <strong>divergência</strong> entre o que está em produção e o que está no Lovable, gerando <strong>retrabalho</strong>, <strong>perda de rastreabilidade</strong> e possíveis <strong>problemas de segurança</strong>. Por isso, todas as mudanças passam pelo TI com controle de versão.
-      </p>
-    </div>
-  </div>
-
-  <div class="footer">
-    Fluxo de deploy &mdash; Time de TI
-  </div>
-
+<!-- ══════════ TOP BAR ══════════ -->
+<div class="top-bar">
+  <span class="logo">TI &middot; GRUPO VALUE</span>
+  <span class="breadcrumb" id="breadcrumb" onclick="navigate('home')" style="display:none;">← Voltar</span>
 </div>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="section active" id="section-home">
+  <div class="home-container">
+    <div class="home-badge">Documentação Interna</div>
+    <h1>Documentação TI<br>Grupo Value</h1>
+    <p class="subtitle">Central de referência para processos, padrões e boas práticas de desenvolvimento assistido por IA.</p>
+
+    <div class="cards-grid">
+      <div class="card" onclick="navigate('flow')">
+        <span class="card-arrow">→</span>
+        <div class="card-icon">🔄</div>
+        <h3>Fluxo de Deploy</h3>
+        <p>Ciclo de vida da aplicação: do Lovable até produção na ValueCore. Entenda cada etapa e quem é responsável.</p>
+      </div>
+      <div class="card" onclick="navigate('prompts')">
+        <span class="card-arrow">→</span>
+        <div class="card-icon">🛡️</div>
+        <h3>Biblioteca de Prompts</h3>
+        <p>Prompts padrão de governança e segurança para uso obrigatório no Lovable.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FLOW ══════════ -->
+<div class="section" id="section-flow">
+  <div class="flow-container">
+
+    <div class="page-header">
+      <h1>Ciclo de Vida da Aplicação</h1>
+      <p>Entenda o que acontece depois que sua aplicação é finalizada no Lovable e como solicitar alterações.</p>
+    </div>
+
+    <div class="flow">
+
+      <div class="step step-dev">
+        <div class="step-number">1</div>
+        <div class="step-title"><span class="step-icon">🛠️</span> Desenvolvimento no Lovable</div>
+        <div class="step-desc">
+          Você constrói sua aplicação no Lovable utilizando o Supabase como backend temporário (banco de dados, autenticação, storage, rotas de API, etc). O Supabase é usado apenas nesta fase porque o Lovable depende dele para funcionar durante o desenvolvimento &mdash; ele <strong>não</strong> é a infraestrutura definitiva da empresa.
+        </div>
+        <span class="tag tag-user">Você faz</span>
+      </div>
+
+      <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+      <div class="step step-dev">
+        <div class="step-number">2</div>
+        <div class="step-title"><span class="step-icon">✅</span> Finalização da Aplicação</div>
+        <div class="step-desc">
+          Ao considerar a aplicação <span class="highlight">pronta</span>, você comunica ao time de TI que o desenvolvimento foi concluído.
+        </div>
+        <span class="tag tag-user">Você faz</span>
+      </div>
+
+      <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+      <div class="step step-homolog">
+        <div class="step-number">3</div>
+        <div class="step-title"><span class="step-icon">🧪</span> Período de Homologação</div>
+        <div class="step-desc">
+          A aplicação entra em uso interno por até <span class="highlight">30 dias</span> para validação no dia a dia. Durante esse período, você ainda pode iterar livremente no Lovable. Caso necessário, o prazo pode ser estendido por mais 30 dias mediante <span class="highlight">justificativa aprovada</span>. Após esse período, a aplicação segue para migração.
+        </div>
+        <span class="tag tag-user">Você valida</span>
+      </div>
+
+      <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+      <div class="step step-qa">
+        <div class="step-number">4</div>
+        <div class="step-title"><span class="step-icon">🔍</span> Controle de Qualidade (QA)</div>
+        <div class="step-desc">
+          O time de TI revisa o código, testa funcionalidades, verifica segurança e valida se a aplicação está funcionando corretamente antes de seguir adiante.
+        </div>
+        <span class="tag tag-ti">TI faz</span>
+      </div>
+
+      <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+      <div class="step step-migrate">
+        <div class="step-number">5</div>
+        <div class="step-title"><span class="step-icon">📦</span> Migração do Supabase</div>
+        <div class="step-desc">
+          Todo o backend é <span class="highlight">retirado do Supabase</span> &mdash; banco de dados, rotas de API, storage, autenticação &mdash; e migrado para a infraestrutura da ValueCore (atualmente GCP). O Supabase deixa de ser utilizado.
+        </div>
+        <span class="tag tag-ti">TI faz</span>
+      </div>
+
+      <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+      <div class="step step-deploy">
+        <div class="step-number">6</div>
+        <div class="step-title"><span class="step-icon">🚀</span> Deploy na ValueCore</div>
+        <div class="step-desc">
+          A aplicação é publicada na infraestrutura da ValueCore (atualmente Google Cloud Platform) em ambiente de produção, com monitoramento, backups e toda a infraestrutura corporativa.
+        </div>
+        <span class="tag tag-ti">TI faz</span>
+      </div>
+
+      <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+      <div class="step step-change">
+        <div class="step-number">7</div>
+        <div class="step-title"><span class="step-icon">📝</span> Solicitação de Alterações</div>
+        <div class="step-desc">
+          A partir deste ponto, <span class="highlight">qualquer alteração</span> precisa ser solicitada ao time de TI. Isso evita retrabalho, garante rastreabilidade e mantém a qualidade do sistema.
+        </div>
+        <span class="tag tag-user">Você solicita</span>
+      </div>
+
+      <div class="connector"><div class="line"></div><div class="arrow"></div></div>
+
+      <div class="step step-version">
+        <div class="step-number">8</div>
+        <div class="step-title"><span class="step-icon">🏷️</span> Nova Versão</div>
+        <div class="step-desc">
+          Cada alteração aprovada e implementada gera uma <span class="highlight">nova versão</span> da aplicação, com registro completo do que mudou, quando e por quem.
+        </div>
+        <span class="tag tag-ti">TI faz</span>
+      </div>
+
+    </div>
+
+    <div class="alert-box">
+      <div class="alert-icon">⚠️</div>
+      <div>
+        <h3>Por que não posso alterar direto no Lovable depois do deploy?</h3>
+        <p>
+          Após o deploy, a aplicação já está rodando na infraestrutura da ValueCore. Alterar diretamente no Lovable causaria <strong>divergência</strong> entre o que está em produção e o que está no Lovable, gerando <strong>retrabalho</strong>, <strong>perda de rastreabilidade</strong> e possíveis <strong>problemas de segurança</strong>. Por isso, todas as mudanças passam pelo TI com controle de versão.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">Fluxo de deploy &mdash; Time de TI</div>
+
+  </div>
+</div>
+
+<!-- ══════════ PROMPTS ══════════ -->
+<div class="section" id="section-prompts">
+  <div class="prompts-container">
+
+    <div class="page-header">
+      <h1>Biblioteca de Prompts</h1>
+      <p>Prompts padronizados para garantir governança e segurança nas aplicações criadas no Lovable.</p>
+    </div>
+
+    <div class="prompt-card">
+      <h2>Prompt Acelerador da Governança e Segurança</h2>
+      <p class="prompt-sub">Documentação de Governança e Biblioteca de Prompts para plataforma Lovable &mdash; Diretrizes de Desenvolvimento Assistido por IA (Lovable/Supabase)</p>
+
+      <div class="prompt-section">
+        <h3>Objetivo</h3>
+        <p>Garantir que aplicações criadas por usuários de negócio (Citizen Developers) utilizem padrões mínimos de segurança, performance e governança de dados desde a primeira linha de código gerada.</p>
+      </div>
+
+      <div class="prompt-section">
+        <h3>Regra de Ouro (O "System Prompt")</h3>
+        <p>Antes de solicitar qualquer funcionalidade ou tela ao Lovable, <strong>copie e cole o bloco abaixo</strong> no início do chat do seu projeto. Isso instrui a IA a seguir nossos padrões técnicos.</p>
+      </div>
+
+      <div class="code-block" id="prompt-code">
+        <button class="copy-btn" onclick="copyPrompt()">Copiar</button>Você está agindo como um Arquiteto de Softwares Sênior focado em Segurança e Performance. Ao gerar código para este projeto (React + Supabase), você deve seguir estritamente as regras abaixo. Não gere código que viole estes princípios:
+
+1. Segurança Crítica (Backend & Auth):
+
+Edge Functions: Todas as Edge Functions (supabase/functions) DEVEM validar o JWT do usuário no início. Se não houver auth.getUser(), retorne 401 imediatamente. Nunca use CORS * sem restrição de origem em produção.
+
+Role Management: Nunca permita via código que o último usuário com role 'admin' ou 'master' seja rebaixado ou deletado (Lockout Prevention).
+
+Validação: Nunca confie apenas na validação do front-end. Tipos de arquivos e dados de entrada devem ser validados via RLS (Row Level Security) ou nas Edge Functions.
+
+2. Performance e Banco de Dados:
+
+N+1 Queries: Ao salvar listas (ex: respostas de formulários), use operações de upsert ou insert em lote (batch). Nunca faça um loop de await insert para cada item.
+
+Selects: Nunca use select('*') em tabelas que podem crescer indefinidamente. Sempre especifique as colunas necessárias e implemente paginação (range) por padrão.
+
+3. Boas Práticas de Front-end:
+
+Links Externos: Todo window.open ou target="_blank" DEVE ter rel="noopener noreferrer" para evitar Reverse Tabnabbing.
+
+Logs: Não adicione console.log de dados sensíveis ou loops de renderização.
+
+4. Integridade de Arquivos:
+
+Ao deletar um registro que possui arquivo anexo, garanta que o arquivo no Storage também seja removido usando o path correto.
+
+Confirme que entendeu estas regras e que irá aplicá-las em todas as respostas futuras.</div>
+
+      <div class="checklist-box">
+        <h4>Checklist de Auto-Validação (Para o Usuário)</h4>
+        <p style="font-size:0.83rem;color:#6b7280;margin-bottom:14px;">Antes de solicitar o deploy para a TI, verifique:</p>
+        <div class="checklist-item">
+          <div class="check"></div>
+          <span><strong>Uploads:</strong> Tente subir um arquivo que não deveria ser aceito (ex: .exe em vez de .pdf). O sistema bloqueou?</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check"></div>
+          <span><strong>Permissões:</strong> Se você deslogar e tentar acessar uma URL interna, você é redirecionado para o login?</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check"></div>
+          <span><strong>Administração:</strong> O sistema impede que você remova a si mesmo se você for o único admin?</span>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h4>Suporte da TI</h4>
+        <p>A TI é responsável pela auditoria final e deploy em produção. Não altere as Edge Functions ou as Políticas de Segurança (RLS) diretamente no Supabase sem consultar a TI. Se a IA gerar um erro de "Policy Violation", contate a equipe técnica em vez de solicitar à IA para "liberar o acesso a tudo".</p>
+      </div>
+
+      <div class="why-box">
+        <h4>Por que essa abordagem funciona?</h4>
+        <p><strong>Prevenção de Retrabalho:</strong> A IA do Lovable é boa, mas preguiçosa. Se você não pedir segurança, ela fará o caminho mais fácil (que geralmente é o inseguro). O prompt força a IA a "pensar" como um Sênior.</p>
+      </div>
+
+    </div>
+
+    <div class="footer">Biblioteca de Prompts &mdash; Time de TI</div>
+
+  </div>
+</div>
+
+<!-- ══════════ JS ══════════ -->
+<script>
+function navigate(page) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + page).classList.add('active');
+
+  const bc = document.getElementById('breadcrumb');
+  bc.style.display = page === 'home' ? 'none' : 'inline';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function copyPrompt() {
+  const code = document.getElementById('prompt-code');
+  const btn = code.querySelector('.copy-btn');
+  const text = code.textContent.replace('Copiar', '').replace('Copiado!', '').trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copiar';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
 
 </body>
 </html>
